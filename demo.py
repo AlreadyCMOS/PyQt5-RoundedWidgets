@@ -18,7 +18,7 @@ if __name__ == "__main__":
     button.clicked.connect(window.close)
 
     
-    ### set Darkstyle Color ###
+    ### set darkstyle color ###
     window.setDarkStyle()
     
     ### set fillet for window ###
@@ -35,7 +35,7 @@ if __name__ == "__main__":
     ### set stroke color ###
     button.setStrokeColor(QtGui.QColor(200, 200, 200, 50))
     
-    ### set Darkstyle Color ###
+    ### set darkstyle color ###
     button.setDarkStyle()
     
     window.show()
