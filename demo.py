@@ -21,10 +21,10 @@ if __name__ == "__main__":
     ### set darkstyle color ###
     window.setDarkStyle()
     
-    ### set fillet for window ###
+    ### window set fillet ###
     window.setRadius(25)
 
-    ### set LinearGradient for window ###
+    ### window set LinearGradient ###
     grad = QtGui.QLinearGradient()
     grad.setStart(0, window.height())
     grad.setFinalStop(window.width(), 0)
@@ -38,5 +38,18 @@ if __name__ == "__main__":
     ### set darkstyle color ###
     button.setDarkStyle()
     
+    ### button set LinearGradient ###
+    # grad.setStart(0, button.height())
+    # grad.setFinalStop(button.width(), 0)
+    # button.setBackgroundGradient(grad)
+    # button.setEnteredGradient(grad)
+    # button.setPressedGradient(grad)
+
+
+    ### button set color ###
+    # button.setBackgroundColor(255, 0, 0)
+    # button.setEnteredColor(QtGui.QColor(125, 0, 150))
+    # button.setPressedColor(20, 20, 60, 150)
+
     window.show()
     app.exec_()
