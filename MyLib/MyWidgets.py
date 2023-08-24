@@ -68,7 +68,7 @@ class RoundedWidget(QtWidgets.QWidget):
     
     
     ### private类函数 ###
-    def __setColorDict(self, a0: int | QtGui.QColor | None, a1: int | None, a2: int | None, a3: int | None, key: str) -> None:
+    def __setColorDict(self, a0: int | QtGui.QColor, a1: int | None, a2: int | None, a3: int | None, key: str) -> None:
         if isinstance(a0, int) and isinstance(a1, int) and isinstance(a2, int) and (isinstance(a3, int) or a3 is None):
             if a3 is not None:
                 self.__color_dict[key].setRgb(a0, a1, a2, a3)
@@ -298,7 +298,7 @@ class RoundedButton(RoundedWidget):
 
 
     ### private类函数 ###
-    def __setColorDict(self, a0: int | QtGui.QColor | None, a1: int | None, a2: int | None, a3: int | None, key: str) -> None:
+    def __setColorDict(self, a0: int | QtGui.QColor, a1: int | None, a2: int | None, a3: int | None, key: str) -> None:
         if isinstance(a0, int) and isinstance(a1, int) and isinstance(a2, int) and (isinstance(a3, int) or a3 is None):
             if a3 is not None:
                 self.__color_dict[key].setRgb(a0, a1, a2, a3)
