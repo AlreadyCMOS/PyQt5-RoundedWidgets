@@ -32,8 +32,8 @@ if __name__ == "__main__":
     grad.setColorAt(1, QtGui.QColor(125, 125, 200, 180))
     window.setBackgroundGradient(grad)
 
-    ### set stroke color ###
-    button.setStrokeColor(QtGui.QColor(200, 200, 200, 50))
+    ### set shadow color ###
+    button.setShadowColor(QtGui.QColor(200, 200, 200, 50))
     
     ### set darkstyle color ###
     button.setDarkStyle()
@@ -51,8 +51,11 @@ if __name__ == "__main__":
     # button.setPressedColor(20, 20, 60, 150)
 
     ### button set Offset ###
-    # button.setStrokeOffset(1.5, 1.5, -1.5, -1.5)
+    # button.setShadowOffset(1.5, 1.5, -1.5, -1.5)
     # button.setBackgroundOffset(0, 0, -1.5, -1.5)
+
+    ### hide the button's shadow ###
+    # button.setShadowVisible(False)
 
     window.show()
     app.exec_()
