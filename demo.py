@@ -45,11 +45,14 @@ if __name__ == "__main__":
     # button.setEnteredGradient(grad)
     # button.setPressedGradient(grad)
 
-
     ### button set color ###
     # button.setBackgroundColor(255, 0, 0)
     # button.setEnteredColor(QtGui.QColor(125, 0, 150))
     # button.setPressedColor(20, 20, 60, 150)
+
+    ### button set Offset ###
+    # button.setStrokeOffset(1.5, 1.5, -1.5, -1.5)
+    # button.setBackgroundOffset(0, 0, -1.5, -1.5)
 
     window.show()
     app.exec_()
