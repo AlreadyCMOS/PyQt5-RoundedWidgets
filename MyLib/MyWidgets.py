@@ -40,9 +40,9 @@ class RoundedWidget(QtWidgets.QWidget):
     def setBackgroundColor(self, color: QtGui.QColor) -> None: pass
 
     @typing.overload
-    def setStrokeColor(self, r: int, g: int, b: int, alpha: int = ...) -> None: pass
+    def setShadowColor(self, r: int, g: int, b: int, alpha: int = ...) -> None: pass
     @typing.overload
-    def setStrokeColor(self, color: QtGui.QColor) -> None: pass
+    def setShadowColor(self, color: QtGui.QColor) -> None: pass
 
 
 
@@ -57,14 +57,14 @@ class RoundedWidget(QtWidgets.QWidget):
 
         ### private属性 ###
         self.__radius: int | float = 10
-        self.__stroke_width: int | float = 0 
+        self.__shadow_width: int | float = 0 
         self.__background_gradient: QtGui.QGradient = None
-        self.__draw_stroke: bool = True
-        self.__stroke_offset: list = [0, 0, 0, 0]
+        self.__draw_shadow: bool = True
+        self.__shadow_offset: list = [0, 0, 0, 0]
         self.__background_offset: list = [0, 0, 0, 0]
         self.__color_dict: dict[str, QtGui.QColor] = {
             "background": QtGui.QColor(240, 240, 240, 255),
-            "stroke": QtGui.QColor(50, 50, 50, 255)
+            "shadow": QtGui.QColor(50, 50, 50, 255)
         }
 
     
@@ -90,28 +90,28 @@ class RoundedWidget(QtWidgets.QWidget):
         painter.setPen(QtGui.QColor(QtCore.Qt.transparent))
 
         rect = QtCore.QRectF(
-            0 + self.__stroke_offset[0],
-            0 + self.__stroke_offset[1],
-            self.rect().width() + self.__stroke_offset[2], 
-            self.rect().height() + self.__stroke_offset[3]
+            0 + self.__shadow_offset[0],
+            0 + self.__shadow_offset[1],
+            self.rect().width() + self.__shadow_offset[2], 
+            self.rect().height() + self.__shadow_offset[3]
         )
 
-        if self.__draw_stroke:
-            painter.setBrush(self.__color_dict.get("stroke"))
+        if self.__draw_shadow:
+            painter.setBrush(self.__color_dict.get("shadow"))
             painter.drawRoundedRect(rect, self.__radius, self.__radius)
         
         rect = QtCore.QRectF(
-            self.__stroke_width + self.__background_offset[0],
-            self.__stroke_width + self.__background_offset[1],
-            self.rect().width() - 2 * self.__stroke_width + self.__background_offset[2], 
-            self.rect().height() - 2 * self.__stroke_width + self.__background_offset[3]
+            self.__shadow_width + self.__background_offset[0],
+            self.__shadow_width + self.__background_offset[1],
+            self.rect().width() - 2 * self.__shadow_width + self.__background_offset[2], 
+            self.rect().height() - 2 * self.__shadow_width + self.__background_offset[3]
         )
 
         if self.__background_gradient is not None:
             painter.setBrush(self.__background_gradient)
         else:
             painter.setBrush(self.__color_dict.get("background"))
-        painter.drawRoundedRect(rect, self.__radius - self.__stroke_width , self.__radius - self.__stroke_width)
+        painter.drawRoundedRect(rect, self.__radius - self.__shadow_width , self.__radius - self.__shadow_width)
         return super().paintEvent(a0)
 
 
@@ -128,15 +128,16 @@ class RoundedWidget(QtWidgets.QWidget):
          
     
 
-    def radius(self) -> int | float:
+    def raduis(self) -> int | float:
         return self.__radius
 
 
 
-    def drawStroke(self, judge: bool) -> None:
+    def setShadowVisible(self, judge: bool) -> None:
         if not isinstance(judge, bool):
             raise TypeError("Parameter passed error! The parameter type must be 'bool'.")
-        self.__draw_stroke = judge
+        self.__draw_shadow = judge
+        self.update()
 
 
 
@@ -146,16 +147,16 @@ class RoundedWidget(QtWidgets.QWidget):
 
 
 
-    def setStrokeWidth(self, width: int | float) -> None:
+    def setShadowWidth(self, width: int | float) -> None:
         if not isinstance(width, (int, float)):
             raise TypeError("Parameter passed error! The parameter type must be 'int' or 'float'.")
-        self.__stroke_width = width
+        self.__shadow_width = width
         self.update()
             
     
     
-    def setStrokeColor(self, a0: int | QtGui.QColor, a1: int | None = None, a2: int | None = None, a3: int | None = None) -> None:
-        self.__setColorDict(a0, a1, a2, a3, "stroke")
+    def setShadowColor(self, a0: int | QtGui.QColor, a1: int | None = None, a2: int | None = None, a3: int | None = None) -> None:
+        self.__setColorDict(a0, a1, a2, a3, "shadow")
         self.update()
 
 
@@ -166,13 +167,15 @@ class RoundedWidget(QtWidgets.QWidget):
 
 
     def setDarkStyle(self) -> None:
-        self.setStrokeColor(200, 200, 200)
+        self.setShadowVisible(True)
+        self.setShadowColor(200, 200, 200)
         self.setBackgroundColor(20, 20, 45)
         
 
 
     def setLightStyle(self) -> None:
-        self.setStrokeColor(50, 50, 50)
+        self.setShadowVisible(True)
+        self.setShadowColor(50, 50, 50)
         self.setBackgroundColor(240, 240, 240)
         
 
@@ -200,23 +203,24 @@ class RoundedWidget(QtWidgets.QWidget):
     
 
 
-    def strokeWidth(self) -> int | float:
-        return self.__stroke_width
+    def shadowWidth(self) -> int | float:
+        return self.__shadow_width
     
 
 
-    def strokeColor(self) -> QtGui.QColor:
-        return QtGui.QColor(self.__color_dict.get("stroke"))
+    def shadowColor(self) -> QtGui.QColor:
+        return QtGui.QColor(self.__color_dict.get("shadow"))
     
 
 
-    def setStrokeOffset(self, x: int | float, y: int | float, w: int | float, h: int | float) -> None:
+    def setShadowOffset(self, x: int | float, y: int | float, w: int | float, h: int | float) -> None:
         if not (isinstance(x, (int, float)) and isinstance(y, (int, float)) and isinstance(w, (int, float)) and isinstance(h, (int, float))):
             raise TypeError("Parameter passed error! The parameter type must be 'int' or 'float'.")
-        self.__stroke_offset[0] = x
-        self.__stroke_offset[1] = y
-        self.__stroke_offset[2] = w
-        self.__stroke_offset[3] = h
+        self.__shadow_offset[0] = x
+        self.__shadow_offset[1] = y
+        self.__shadow_offset[2] = w
+        self.__shadow_offset[3] = h
+        self.update()
     
 
 
@@ -227,11 +231,12 @@ class RoundedWidget(QtWidgets.QWidget):
         self.__background_offset[1] = y
         self.__background_offset[2] = w
         self.__background_offset[3] = h
+        self.update()
 
 
 
-    def strokeOffset(self) -> tuple:
-        return tuple(self.__stroke_offset)
+    def shadowOffset(self) -> tuple:
+        return tuple(self.__shadow_offset)
     
 
 
@@ -318,8 +323,8 @@ class RoundedButton(RoundedWidget):
             self.__text_lable.setText(a0)
         self.__text_font.setFamily("微软雅黑")
         self.__text_font.setPointSize(11)
-        self.setStrokeColor(50, 50, 50)
-        self.setStrokeWidth(1.5)
+        self.setShadowColor(50, 50, 50)
+        self.setShadowWidth(1.5)
         self.__text_lable.setAlignment(QtCore.Qt.AlignCenter)   ### 字体居中 ###
         self.__label_palette.setColor(QtGui.QPalette.WindowText, self.__color_dict.get("text"))
         self.__text_lable.setPalette(self.__label_palette)
@@ -413,8 +418,9 @@ class RoundedButton(RoundedWidget):
 
 
     def setDarkStyle(self) -> None:
+        self.setShadowVisible(True)
         self.setTextColor(200, 200, 200)
-        self.setStrokeColor(200, 200, 200)
+        self.setShadowColor(200, 200, 200)
         self.setEnteredColor(65, 65, 85)
         self.setPressedColor(50, 50, 70)
         self.setBackgroundColor(40, 40, 60)
@@ -422,8 +428,9 @@ class RoundedButton(RoundedWidget):
 
 
     def setLightStyle(self) -> None:
+        self.setShadowVisible(True)
         self.setTextColor(50, 50, 50)
-        self.setStrokeColor(50, 50, 50)
+        self.setShadowColor(50, 50, 50)
         self.setEnteredColor(240, 240, 240)
         self.setPressedColor(220, 220, 220)
         self.setBackgroundColor(250, 250, 250)
