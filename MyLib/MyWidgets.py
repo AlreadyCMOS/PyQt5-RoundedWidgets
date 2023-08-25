@@ -59,7 +59,9 @@ class RoundedWidget(QtWidgets.QWidget):
         self.__radius: int | float = 10
         self.__stroke_width: int | float = 0 
         self.__background_gradient: QtGui.QGradient = None
-        self.__stroke_offset: list = [0, 0]
+        self.__draw_stroke: bool = True
+        self.__stroke_offset: list = [0, 0, 0, 0]
+        self.__background_offset: list = [0, 0, 0, 0]
         self.__color_dict: dict[str, QtGui.QColor] = {
             "background": QtGui.QColor(240, 240, 240, 255),
             "stroke": QtGui.QColor(50, 50, 50, 255)
@@ -87,15 +89,22 @@ class RoundedWidget(QtWidgets.QWidget):
         painter.setRenderHint(QtGui.QPainter.Antialiasing, True)      ### 抗锯齿 ###
         painter.setPen(QtGui.QColor(QtCore.Qt.transparent))
 
-        if self.__stroke_width > 0:
-            painter.setBrush(self.__color_dict.get("stroke"))
-            painter.drawRoundedRect(self.rect(), self.__radius, self.__radius)
-
         rect = QtCore.QRectF(
-            self.__stroke_width + self.__stroke_offset[0],
-            self.__stroke_width + self.__stroke_offset[1],
-            self.rect().width() - 2 * self.__stroke_width + self.__stroke_offset[0], 
-            self.rect().height() - 2 * self.__stroke_width + self.__stroke_offset[1]
+            0 + self.__stroke_offset[0],
+            0 + self.__stroke_offset[1],
+            self.rect().width() + self.__stroke_offset[2], 
+            self.rect().height() + self.__stroke_offset[3]
+        )
+
+        if self.__draw_stroke:
+            painter.setBrush(self.__color_dict.get("stroke"))
+            painter.drawRoundedRect(rect, self.__radius, self.__radius)
+        
+        rect = QtCore.QRectF(
+            self.__stroke_width + self.__background_offset[0],
+            self.__stroke_width + self.__background_offset[1],
+            self.rect().width() - 2 * self.__stroke_width + self.__background_offset[2], 
+            self.rect().height() - 2 * self.__stroke_width + self.__background_offset[3]
         )
 
         if self.__background_gradient is not None:
@@ -105,20 +114,30 @@ class RoundedWidget(QtWidgets.QWidget):
         painter.drawRoundedRect(rect, self.__radius - self.__stroke_width , self.__radius - self.__stroke_width)
         return super().paintEvent(a0)
 
-    
+
 
     ### 定义类函数 ###
     def setRadius(self, r: int | float) -> None:
         if not isinstance(r, (int, float)):
-            raise TypeError("Parameter passed error! The parameter type must be 'int' or 'float.")
-        self.__radius = r
+            raise TypeError("Parameter passed error! The parameter type must be 'int' or 'float'.")
+        if r < 0:
+            self.__radius = 0
+        else:
+            self.__radius = r
         self.update()
          
     
 
     def radius(self) -> int | float:
         return self.__radius
-        
+
+
+
+    def drawStroke(self, judge: bool) -> None:
+        if not isinstance(judge, bool):
+            raise TypeError("Parameter passed error! The parameter type must be 'bool'.")
+        self.__draw_stroke = judge
+
 
 
     def setBackgroundColor(self, a0: int | QtGui.QColor, a1: int | None = None, a2: int | None = None, a3: int | None = None) -> None:
@@ -129,7 +148,7 @@ class RoundedWidget(QtWidgets.QWidget):
 
     def setStrokeWidth(self, width: int | float) -> None:
         if not isinstance(width, (int, float)):
-            raise TypeError("Parameter passed error! The parameter type must be 'int' or 'float.")
+            raise TypeError("Parameter passed error! The parameter type must be 'int' or 'float'.")
         self.__stroke_width = width
         self.update()
             
@@ -142,8 +161,7 @@ class RoundedWidget(QtWidgets.QWidget):
 
 
     def backgroundColor(self) -> QtGui.QColor:
-        color = QtGui.QColor(self.__color_dict.get("background"))
-        return color
+        return QtGui.QColor(self.__color_dict.get("background"))
 
 
 
@@ -162,6 +180,7 @@ class RoundedWidget(QtWidgets.QWidget):
     def setBackgroundGradient(self, gradient: QtGui.QGradient) -> None:
         if not isinstance(gradient, QtGui.QGradient):
             raise TypeError("Parameter passed error! The parameter type must be 'QGradient'.")
+        self.__background_gradient = None
         match type(gradient):
             case QtGui.QLinearGradient:
                 self.__background_gradient = QtGui.QLinearGradient(gradient)
@@ -169,7 +188,7 @@ class RoundedWidget(QtWidgets.QWidget):
                 self.__background_gradient = QtGui.QRadialGradient(gradient)
             case QtGui.QConicalGradient:
                 self.__background_gradient = QtGui.QConicalGradient(gradient)
-            case _:
+            case QtGui.QGradient:
                 self.__background_gradient = QtGui.QGradient(gradient)
         self.update()
     
@@ -187,24 +206,37 @@ class RoundedWidget(QtWidgets.QWidget):
 
 
     def strokeColor(self) -> QtGui.QColor:
-        color = QtGui.QColor(self.__color_dict.get("stroke"))
-        return color
+        return QtGui.QColor(self.__color_dict.get("stroke"))
     
 
 
-    def setStrokeOffset(self, x: int | float, y: int | float) -> None:
-        if not (isinstance(x, (int, float)) and isinstance(y, (int, float))):
-            raise TypeError("Parameter passed error! The parameter type must be 'int' or 'float.")
+    def setStrokeOffset(self, x: int | float, y: int | float, w: int | float, h: int | float) -> None:
+        if not (isinstance(x, (int, float)) and isinstance(y, (int, float)) and isinstance(w, (int, float)) and isinstance(h, (int, float))):
+            raise TypeError("Parameter passed error! The parameter type must be 'int' or 'float'.")
         self.__stroke_offset[0] = x
         self.__stroke_offset[1] = y
-        for i in range(2):
-            if self.__stroke_offset[i] > self.__stroke_width:
-                self.__stroke_offset[i] = self.__stroke_width
+        self.__stroke_offset[2] = w
+        self.__stroke_offset[3] = h
     
+
+
+    def setBackgroundOffset(self, x: int | float, y: int | float, w: int | float, h: int | float) -> None:
+        if not (isinstance(x, (int, float)) and isinstance(y, (int, float)) and isinstance(w, (int, float)) and isinstance(h, (int, float))):
+            raise TypeError("Parameter passed error! The parameter type must be 'int' or 'float'.")
+        self.__background_offset[0] = x
+        self.__background_offset[1] = y
+        self.__background_offset[2] = w
+        self.__background_offset[3] = h
+
 
 
     def strokeOffset(self) -> tuple:
         return tuple(self.__stroke_offset)
+    
+
+
+    def backgroundOffset(self) -> tuple:
+        return tuple(self.__background_offset)
 
 
 
@@ -412,8 +444,7 @@ class RoundedButton(RoundedWidget):
 
 
     def backgroundColor(self) -> QtGui.QColor:
-        color = QtGui.QColor(self.__color_dict.get("standard"))
-        return color
+        return QtGui.QColor(self.__color_dict.get("standard"))
     
 
 
@@ -459,20 +490,17 @@ class RoundedButton(RoundedWidget):
 
 
     def pressedColor(self) -> QtGui.QColor:
-        color = QtGui.QColor(self.__color_dict.get("pressed"))
-        return color
+        return QtGui.QColor(self.__color_dict.get("pressed"))
 
     
 
     def enteredColor(self) -> QtGui.QColor:
-        color = QtGui.QColor(self.__color_dict.get("entered"))
-        return color
+        return QtGui.QColor(self.__color_dict.get("entered"))
 
 
 
     def textColor(self) -> QtGui.QColor:
-        color = QtGui.QColor(self.__color_dict.get("text"))
-        return color
+        return QtGui.QColor(self.__color_dict.get("text"))
     
 
 
@@ -497,8 +525,7 @@ class RoundedButton(RoundedWidget):
 
     
     def font(self) -> QtGui.QFont:
-        font = QtGui.QFont(self.__text_font)
-        return font
+        return QtGui.QFont(self.__text_font)
     
 
 
