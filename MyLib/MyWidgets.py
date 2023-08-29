@@ -70,14 +70,29 @@ class RoundedWidget(QtWidgets.QWidget):
     
     
     ### private类函数 ###
-    def __setColorDict(self, a0: int | QtGui.QColor, a1: int | None, a2: int | None, a3: int | None, key: str) -> None:
-        if isinstance(a0, int) and isinstance(a1, int) and isinstance(a2, int) and (isinstance(a3, int) or a3 is None):
+    def __setColorDict(
+            self, 
+            a0: int | QtGui.QColor, 
+            a1: int | None, 
+            a2: int | None, 
+            a3: int | None, 
+            key: str
+    ) -> None:
+
+        if (
+            isinstance(a0, int) and 
+            isinstance(a1, int) and 
+            isinstance(a2, int) and 
+            (isinstance(a3, int) or a3 is None)
+        ):
             if a3 is not None:
                 self.__color_dict[key].setRgb(a0, a1, a2, a3)
             else:
                 self.__color_dict[key].setRgb(a0, a1, a2)
+
         elif isinstance(a0, QtGui.QColor) and a1 is None and a2 is None and a3 is None:
             self.__color_dict[key].setRgb(a0.red(), a0.green(), a0.blue(), a0.alpha())
+
         else:
             raise TypeError("Parameter passed error!")
 
@@ -141,7 +156,13 @@ class RoundedWidget(QtWidgets.QWidget):
 
 
 
-    def setBackgroundColor(self, a0: int | QtGui.QColor, a1: int | None = None, a2: int | None = None, a3: int | None = None) -> None:
+    def setBackgroundColor(
+            self, 
+            a0: int | QtGui.QColor, 
+            a1: int | None = None, 
+            a2: int | None = None, 
+            a3: int | None = None
+    ) -> None:
         self.__setColorDict(a0, a1, a2, a3, "background")
         self.update()
 
@@ -155,7 +176,13 @@ class RoundedWidget(QtWidgets.QWidget):
             
     
     
-    def setBottomColor(self, a0: int | QtGui.QColor, a1: int | None = None, a2: int | None = None, a3: int | None = None) -> None:
+    def setBottomColor(
+            self, 
+            a0: int | QtGui.QColor, 
+            a1: int | None = None, 
+            a2: int | None = None, 
+            a3: int | None = None
+    ) -> None:
         self.__setColorDict(a0, a1, a2, a3, "bottom")
         self.update()
 
@@ -213,8 +240,20 @@ class RoundedWidget(QtWidgets.QWidget):
     
 
 
-    def setBottomOffset(self, x: int | float, y: int | float, w: int | float, h: int | float) -> None:
-        if not (isinstance(x, (int, float)) and isinstance(y, (int, float)) and isinstance(w, (int, float)) and isinstance(h, (int, float))):
+    def setBottomOffset(
+            self, 
+            x: int | float, 
+            y: int | float, 
+            w: int | float, 
+            h: int | float
+    ) -> None:
+
+        if not (
+            isinstance(x, (int, float)) and 
+            isinstance(y, (int, float)) and 
+            isinstance(w, (int, float)) and 
+            isinstance(h, (int, float))
+        ):
             raise TypeError("Parameter passed error! The parameter type must be 'int' or 'float'.")
         self.__bottom_offset[0] = x
         self.__bottom_offset[1] = y
@@ -224,8 +263,20 @@ class RoundedWidget(QtWidgets.QWidget):
     
 
 
-    def setBackgroundOffset(self, x: int | float, y: int | float, w: int | float, h: int | float) -> None:
-        if not (isinstance(x, (int, float)) and isinstance(y, (int, float)) and isinstance(w, (int, float)) and isinstance(h, (int, float))):
+    def setBackgroundOffset(
+            self, 
+            x: int | float, 
+            y: int | float, 
+            w: int | float, 
+            h: int | float
+    ) -> None:
+        
+        if not (
+            isinstance(x, (int, float)) and 
+            isinstance(y, (int, float)) and 
+            isinstance(w, (int, float)) and 
+            isinstance(h, (int, float))
+        ):
             raise TypeError("Parameter passed error! The parameter type must be 'int' or 'float'.")
         self.__background_offset[0] = x
         self.__background_offset[1] = y
@@ -323,26 +374,41 @@ class RoundedButton(RoundedWidget):
             self.__text_lable.setText(a0)
         self.__text_font.setFamily("微软雅黑")
         self.__text_font.setPointSize(11)
-        self.setBottomColor(50, 50, 50)
-        self.setBottomWidth(1.5)
         self.__text_lable.setAlignment(QtCore.Qt.AlignCenter)   ### 字体居中 ###
         self.__label_palette.setColor(QtGui.QPalette.WindowText, self.__color_dict.get("text"))
         self.__text_lable.setPalette(self.__label_palette)
         self.__h_layout.addWidget(self.__text_lable)
+        self.setBottomColor(50, 50, 50)
+        self.setBottomWidth(1.5)
         super().setFont(self.__text_font)
         super().setBackgroundColor(self.__color_dict.get("standard"))
 
 
 
     ### private类函数 ###
-    def __setColorDict(self, a0: int | QtGui.QColor, a1: int | None, a2: int | None, a3: int | None, key: str) -> None:
-        if isinstance(a0, int) and isinstance(a1, int) and isinstance(a2, int) and (isinstance(a3, int) or a3 is None):
+    def __setColorDict(
+            self, 
+            a0: int | QtGui.QColor, 
+            a1: int | None, 
+            a2: int | None, 
+            a3: int | None, 
+            key: str
+    ) -> None:
+        
+        if (
+            isinstance(a0, int) and 
+            isinstance(a1, int) and 
+            isinstance(a2, int) and 
+            (isinstance(a3, int) or a3 is None)
+        ):
             if a3 is not None:
                 self.__color_dict[key].setRgb(a0, a1, a2, a3)
             else:
                 self.__color_dict[key].setRgb(a0, a1, a2)
+
         elif isinstance(a0, QtGui.QColor) and a1 is None and a2 is None and a3 is None:
             self.__color_dict[key].setRgb(a0.red(), a0.green(), a0.blue(), a0.alpha())
+
         else:
             raise TypeError("Parameter passed error!")
 
@@ -366,7 +432,13 @@ class RoundedButton(RoundedWidget):
 
 
     ### 重写类函数 ###
-    def setBackgroundColor(self, a0: int | QtGui.QColor, a1: int | None = None, a2: int | None = None, a3: int | None = None) -> None:
+    def setBackgroundColor(
+            self, 
+            a0: int | QtGui.QColor, 
+            a1: int | None = None, 
+            a2: int | None = None, 
+            a3: int | None = None
+    ) -> None:
         self.__setColorDict(a0, a1, a2, a3, "standard")
         super().setBackgroundColor(self.__color_dict.get("standard"))
 
@@ -479,17 +551,35 @@ class RoundedButton(RoundedWidget):
             
     
 
-    def setEnteredColor(self, a0: int | QtGui.QColor, a1: int | None = None, a2: int | None = None, a3: int | None = None) -> None:
+    def setEnteredColor(
+            self, 
+            a0: int | QtGui.QColor, 
+            a1: int | None = None, 
+            a2: int | None = None, 
+            a3: int | None = None
+    ) -> None:
         self.__setColorDict(a0, a1, a2, a3, "entered")
 
 
 
-    def setPressedColor(self, a0: int | QtGui.QColor, a1: int | None = None, a2: int | None = None, a3: int | None = None) -> None:
+    def setPressedColor(
+            self, 
+            a0: int | QtGui.QColor, 
+            a1: int | None = None, 
+            a2: int | None = None, 
+            a3: int | None = None
+    ) -> None:
         self.__setColorDict(a0, a1, a2, a3, "pressed")
 
 
 
-    def setTextColor(self, a0: int | QtGui.QColor, a1: int | None = None, a2: int | None = None, a3: int | None = None) -> None:
+    def setTextColor(
+            self, 
+            a0: int | QtGui.QColor, 
+            a1: int | None = None, 
+            a2: int | None = None, 
+            a3: int | None = None
+    ) -> None:
         self.__setColorDict(a0, a1, a2, a3, "text")
         self.__label_palette.setColor(QtGui.QPalette.WindowText, self.__color_dict.get("text"))
         self.__text_lable.setPalette(self.__label_palette)
