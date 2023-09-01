@@ -8,6 +8,8 @@ class列表：
 RoundedWidget（圆角窗体）
 
 RoundedButton（圆角按钮）
+
+ShadowFrame（阴影边框）
 """
 
 
@@ -71,12 +73,12 @@ class RoundedWidget(QtWidgets.QWidget):
     
     ### private类函数 ###
     def __setColorDict(
-            self, 
-            a0: int | QtGui.QColor, 
-            a1: int | None, 
-            a2: int | None, 
-            a3: int | None, 
-            key: str
+        self, 
+        a0: int | QtGui.QColor, 
+        a1: int | None, 
+        a2: int | None, 
+        a3: int | None, 
+        key: str
     ) -> None:
 
         if (
@@ -157,11 +159,11 @@ class RoundedWidget(QtWidgets.QWidget):
 
 
     def setBackgroundColor(
-            self, 
-            a0: int | QtGui.QColor, 
-            a1: int | None = None, 
-            a2: int | None = None, 
-            a3: int | None = None
+        self, 
+        a0: int | QtGui.QColor, 
+        a1: int | None = None, 
+        a2: int | None = None, 
+        a3: int | None = None
     ) -> None:
         self.__setColorDict(a0, a1, a2, a3, "background")
         self.update()
@@ -171,17 +173,20 @@ class RoundedWidget(QtWidgets.QWidget):
     def setBottomWidth(self, width: int | float) -> None:
         if not isinstance(width, (int, float)):
             raise TypeError("Parameter passed error! The parameter type must be 'int' or 'float'.")
-        self.__bottom_width = width
+        if width < 0:
+            self.__bottom_width = 0
+        else:
+            self.__bottom_width = width
         self.update()
             
     
     
     def setBottomColor(
-            self, 
-            a0: int | QtGui.QColor, 
-            a1: int | None = None, 
-            a2: int | None = None, 
-            a3: int | None = None
+        self, 
+        a0: int | QtGui.QColor, 
+        a1: int | None = None, 
+        a2: int | None = None, 
+        a3: int | None = None
     ) -> None:
         self.__setColorDict(a0, a1, a2, a3, "bottom")
         self.update()
@@ -241,11 +246,11 @@ class RoundedWidget(QtWidgets.QWidget):
 
 
     def setBottomOffset(
-            self, 
-            x: int | float, 
-            y: int | float, 
-            w: int | float, 
-            h: int | float
+        self, 
+        x: int | float, 
+        y: int | float, 
+        w: int | float, 
+        h: int | float
     ) -> None:
 
         if not (
@@ -264,11 +269,11 @@ class RoundedWidget(QtWidgets.QWidget):
 
 
     def setBackgroundOffset(
-            self, 
-            x: int | float, 
-            y: int | float, 
-            w: int | float, 
-            h: int | float
+        self, 
+        x: int | float, 
+        y: int | float, 
+        w: int | float, 
+        h: int | float
     ) -> None:
         
         if not (
@@ -293,6 +298,14 @@ class RoundedWidget(QtWidgets.QWidget):
 
     def backgroundOffset(self) -> tuple:
         return tuple(self.__background_offset)
+
+
+
+
+
+### ============================================================================================================= ###
+### ============================================================================================================= ###
+### ============================================================================================================= ###
 
 
 
@@ -342,7 +355,12 @@ class RoundedButton(RoundedWidget):
 
 
     ### 构造函数 ###
-    def __init__(self, a0: QtWidgets.QWidget | str | None = None, a1: str | None = None) -> None:
+    def __init__(
+        self, 
+        a0: QtWidgets.QWidget | str | None = None, 
+        a1: str | None = None
+    ) -> None:
+        
         if (a0 is not None and a1 is not None) and not isinstance(a0, QtWidgets.QWidget):
             raise TypeError("Parameter passed error!")
         elif isinstance(a0, QtWidgets.QWidget):
@@ -387,12 +405,12 @@ class RoundedButton(RoundedWidget):
 
     ### private类函数 ###
     def __setColorDict(
-            self, 
-            a0: int | QtGui.QColor, 
-            a1: int | None, 
-            a2: int | None, 
-            a3: int | None, 
-            key: str
+        self, 
+        a0: int | QtGui.QColor, 
+        a1: int | None, 
+        a2: int | None, 
+        a3: int | None, 
+        key: str
     ) -> None:
         
         if (
@@ -433,11 +451,11 @@ class RoundedButton(RoundedWidget):
 
     ### 重写类函数 ###
     def setBackgroundColor(
-            self, 
-            a0: int | QtGui.QColor, 
-            a1: int | None = None, 
-            a2: int | None = None, 
-            a3: int | None = None
+        self, 
+        a0: int | QtGui.QColor, 
+        a1: int | None = None, 
+        a2: int | None = None, 
+        a3: int | None = None
     ) -> None:
         self.__setColorDict(a0, a1, a2, a3, "standard")
         super().setBackgroundColor(self.__color_dict.get("standard"))
@@ -552,33 +570,33 @@ class RoundedButton(RoundedWidget):
     
 
     def setEnteredColor(
-            self, 
-            a0: int | QtGui.QColor, 
-            a1: int | None = None, 
-            a2: int | None = None, 
-            a3: int | None = None
+        self, 
+        a0: int | QtGui.QColor, 
+        a1: int | None = None, 
+        a2: int | None = None, 
+        a3: int | None = None
     ) -> None:
         self.__setColorDict(a0, a1, a2, a3, "entered")
 
 
 
     def setPressedColor(
-            self, 
-            a0: int | QtGui.QColor, 
-            a1: int | None = None, 
-            a2: int | None = None, 
-            a3: int | None = None
+        self, 
+        a0: int | QtGui.QColor, 
+        a1: int | None = None, 
+        a2: int | None = None, 
+        a3: int | None = None
     ) -> None:
         self.__setColorDict(a0, a1, a2, a3, "pressed")
 
 
 
     def setTextColor(
-            self, 
-            a0: int | QtGui.QColor, 
-            a1: int | None = None, 
-            a2: int | None = None, 
-            a3: int | None = None
+        self, 
+        a0: int | QtGui.QColor, 
+        a1: int | None = None, 
+        a2: int | None = None, 
+        a3: int | None = None
     ) -> None:
         self.__setColorDict(a0, a1, a2, a3, "text")
         self.__label_palette.setColor(QtGui.QPalette.WindowText, self.__color_dict.get("text"))
@@ -643,3 +661,365 @@ class RoundedButton(RoundedWidget):
     
 
 
+
+
+### ============================================================================================================= ###
+### ============================================================================================================= ###
+### ============================================================================================================= ###
+
+
+
+
+
+### -----阴影边框----- ###
+class ShadowFrame(object):
+
+    ### -----绘制阴影（私有类）----- ###
+    class __ShadowPainter(QtWidgets.QWidget):
+        
+        ### 构造函数 ###
+        def __init__(
+            self, 
+            parent: QtWidgets.QWidget | None = None, 
+            bind_obj: RoundedWidget | None = None,
+            shadow_width: int | float = None
+        ) -> None:
+            super().__init__(parent)
+
+            self.__bind_obj = bind_obj
+            self.__shadow_width = shadow_width
+            self.__shadow_radiu = self.__bind_obj.raduis() + self.__shadow_width
+            self.__centers_dict: dict[str, QtCore.QPointF] = None
+            self.__pie_gradient = QtGui.QRadialGradient()
+            self.__rect_gradient = QtGui.QLinearGradient()
+
+            self.setGeometry(
+                self.__bind_obj.x() - self.__shadow_width,
+                self.__bind_obj.y() - self.__shadow_width,
+                self.__bind_obj.width() + 2 * self.__shadow_width,
+                self.__bind_obj.height() + 2 * self.__shadow_width
+            )
+            self.__setCenterDict()
+            self.setColorAt(0, QtGui.QColor(0, 0, 0, 0))
+            self.setColorAt(1, QtGui.QColor(0, 0, 0, 0))
+            self.__bind_obj.raise_()
+            self.lower()
+
+
+
+        ### private类函数 ###
+        def __setCenterDict(self):
+            
+            if self.__centers_dict is not None:
+                del self.__centers_dict
+
+            above = self.__shadow_radiu
+            below = self.height() - self.__shadow_radiu
+            left = self.__shadow_radiu
+            right = self.width() - self.__shadow_radiu
+            self.__centers_dict: dict[str, QtCore.QPointF] = {
+                "upperL": QtCore.QPointF(left, above),
+                "upperR": QtCore.QPointF(right, above),
+                "lowerL": QtCore.QPointF(left, below),
+                "lowerR": QtCore.QPointF(right, below)
+            }
+
+
+
+        ### 重写类函数 ###
+        def paintEvent(self, a0: QtGui.QPaintEvent) -> None:
+            painter = QtGui.QPainter(self)
+            painter.setPen(QtGui.QColor(QtCore.Qt.transparent))
+            painter.setRenderHint(QtGui.QPainter.Antialiasing)
+
+            pie_rect_width = 2 * self.__shadow_radiu
+            self.__pie_gradient.setCenterRadius(self.__shadow_radiu)
+
+            self.__pie_gradient.setCenter(self.__centers_dict.get("upperL"))
+            self.__pie_gradient.setFocalPoint(self.__centers_dict.get("upperL"))
+            painter.setBrush(self.__pie_gradient)
+            painter.drawPie(
+                QtCore.QRectF(
+                    self.__centers_dict.get("upperL").x() - self.__shadow_radiu,
+                    self.__centers_dict.get("upperL").y() - self.__shadow_radiu,
+                    pie_rect_width, 
+                    pie_rect_width
+                ),
+                90 * 16,
+                90 * 16
+            )
+
+            self.__pie_gradient.setCenter(self.__centers_dict.get("upperR"))
+            self.__pie_gradient.setFocalPoint(self.__centers_dict.get("upperR"))
+            painter.setBrush(self.__pie_gradient)
+            painter.drawPie(
+                QtCore.QRectF(
+                    self.__centers_dict.get("upperR").x() - self.__shadow_radiu,
+                    self.__centers_dict.get("upperR").y() - self.__shadow_radiu,
+                    pie_rect_width, 
+                    pie_rect_width
+                ),
+                0 * 16,
+                90 * 16
+            )
+
+            self.__pie_gradient.setCenter(self.__centers_dict.get("lowerL"))
+            self.__pie_gradient.setFocalPoint(self.__centers_dict.get("lowerL"))
+            painter.setBrush(self.__pie_gradient)
+            painter.drawPie(
+                QtCore.QRectF(
+                    self.__centers_dict.get("lowerL").x() - self.__shadow_radiu,
+                    self.__centers_dict.get("lowerL").y() - self.__shadow_radiu,
+                    pie_rect_width, 
+                    pie_rect_width
+                ),
+                180 * 16,
+                90 * 16
+            )
+
+            self.__pie_gradient.setCenter(self.__centers_dict.get("lowerR"))
+            self.__pie_gradient.setFocalPoint(self.__centers_dict.get("lowerR"))
+            painter.setBrush(self.__pie_gradient)
+            painter.drawPie(
+                QtCore.QRectF(
+                    self.__centers_dict.get("lowerR").x() - self.__shadow_radiu,
+                    self.__centers_dict.get("lowerR").y() - self.__shadow_radiu,
+                    pie_rect_width, 
+                    pie_rect_width
+                ),
+                270 * 16,
+                90 * 16
+            )
+
+            self.__rect_gradient.setStart(self.__shadow_width, 0)
+            self.__rect_gradient.setFinalStop(0, 0)
+            painter.setBrush(self.__rect_gradient)
+            painter.drawRect(
+                QtCore.QRectF(
+                    0, 
+                    self.__centers_dict.get("upperL").y(), 
+                    self.__shadow_width, 
+                    self.__bind_obj.height() - 2 * self.__bind_obj.raduis()
+                )
+            )
+
+            self.__rect_gradient.setStart(0, self.__shadow_width)
+            self.__rect_gradient.setFinalStop(0, 0)
+            painter.setBrush(self.__rect_gradient)
+            painter.drawRect(
+                QtCore.QRectF(
+                    self.__centers_dict.get("upperL").x(),
+                    0,
+                    self.__bind_obj.width() - 2 * self.__bind_obj.raduis(),
+                    self.__shadow_width
+                )
+            )
+
+            self.__rect_gradient.setStart(self.width() - self.__shadow_width, 0)
+            self.__rect_gradient.setFinalStop(self.width(), 0)
+            painter.setBrush(self.__rect_gradient)
+            painter.drawRect(
+                QtCore.QRectF(
+                    self.width() - self.__shadow_width,
+                    self.__centers_dict.get("upperR").y(),
+                    self.__shadow_width, 
+                    self.__bind_obj.height() - 2 * self.__bind_obj.raduis()
+                )
+            )
+            
+            self.__rect_gradient.setStart(0, self.height() - self.__shadow_width)
+            self.__rect_gradient.setFinalStop(0, self.height())
+            painter.setBrush(self.__rect_gradient)
+            painter.drawRect(
+                QtCore.QRectF(
+                    self.__centers_dict.get("lowerL").x(),
+                    self.height() - self.__shadow_width,
+                    self.__bind_obj.width() - 2 * self.__bind_obj.raduis(),
+                    self.__shadow_width
+                )
+            )
+
+            return super().paintEvent(a0)
+            
+
+
+        ### 定义类函数 ###
+        def shadowWidth(self) -> int | float:
+            return self.__shadow_width
+
+
+
+        def setColorAt(self, pos, color) -> None:
+            a = self.__bind_obj.raduis() / self.__shadow_radiu
+            b = self.__shadow_width / self.__shadow_radiu
+            self.__rect_gradient.setColorAt(pos, color)
+            self.__pie_gradient.setColorAt(a + b * pos, color)
+            self.update()
+        
+
+
+        def clearGradient(self) -> None:
+            del self.__pie_gradient, self.__rect_gradient
+            self.__pie_gradient = QtGui.QRadialGradient()
+            self.__rect_gradient = QtGui.QLinearGradient()
+
+
+
+        def setShadowWidth(self, width: int | float) -> None:
+            self.__shadow_width = width
+            self.__shadow_radiu = self.__bind_obj.raduis() + self.__shadow_width
+            self.setGeometry(
+                self.__bind_obj.x() - self.__shadow_width,
+                self.__bind_obj.y() - self.__shadow_width,
+                self.__bind_obj.width() + 2 * self.__shadow_width,
+                self.__bind_obj.height() + 2 * self.__shadow_width
+            )
+            self.__setCenterDict()
+            self.update()
+
+
+
+    ### ========================================================================================================= ###
+
+
+
+    ### 函数重载 ###
+    @typing.overload
+    def __init__(self) -> None: pass
+    @typing.overload
+    def __init__(self, parent: QtWidgets.QWidget | None = ...) -> None: pass
+    @typing.overload
+    def __init__(self, parent: QtWidgets.QWidget | None = ..., bind_obj: RoundedWidget | None = ...) -> None: pass
+
+
+
+    ### 构造函数 ###
+    def __init__(
+        self, 
+        parent: QtWidgets.QWidget | None = None, 
+        bind_obj: RoundedWidget | None = None
+    ) -> None:
+
+        if  (parent is not None and not isinstance(parent, QtWidgets.QWidget)) or \
+            (bind_obj is not None and not isinstance(bind_obj, RoundedWidget)) or \
+            (parent is None and bind_obj is not None):
+            raise TypeError("Parameter passed error!")
+        elif isinstance(parent, QtWidgets.QWidget) and isinstance(bind_obj, RoundedWidget):
+            if parent is not bind_obj.parent():
+                raise TypeError("Parameter passed error!, the parent of 'bind_obj' is not the parameter 'parent'")
+
+        self.__parent: QtWidgets.QWidget = parent
+        self.__shadow: self.__ShadowPainter = None
+        self.__shadow_width = 15
+        self.__gradient_color_list: list = [
+            [0, QtGui.QColor(0, 0, 0, 0)],
+            [1, QtGui.QColor(0, 0, 0, 0)]
+        ]
+        
+        if bind_obj is not None and parent is not None:
+            self.__shadow = self.__ShadowPainter(parent, bind_obj, self.__shadow_width)
+
+
+
+    ### private类函数 ###
+    def __flash(self) -> None:
+        self.__shadow.clearGradient()
+        for i in range(len(self.__gradient_color_list)):
+            self.__shadow.setColorAt(self.__gradient_color_list[i][0], self.__gradient_color_list[i][1])
+
+
+
+    ### 定义类函数 ###
+    def setBindObject(self, bind_obj: RoundedWidget) -> None:
+        if not isinstance(bind_obj, RoundedWidget):
+            raise TypeError("Parameter passed error! The parameter type must be 'RoundedWidget'.")
+        elif self.__parent is None:
+            raise AttributeError("The 'parent' of the frame is None")
+        
+        if self.__shadow is not None:
+            self.__shadow.deleteLater()
+            del self.__shadow
+        self.__shadow = self.__ShadowPainter(self.__parent, bind_obj, self.__shadow_width)
+        self.__flash()
+    
+
+
+    def setParent(self, parent: QtWidgets.QWidget) -> None:
+        if not isinstance(parent, QtWidgets.QWidget):
+            raise TypeError("Parameter passed error! The parameter type must be 'QWidget'.")
+        elif self.__parent is not None:
+            del self.__parent
+        self.__parent = parent
+    
+
+
+    def setColorAt(self, pos: int | float, color: QtGui.QColor) -> None:
+        if not (isinstance(pos, (int, float)) and isinstance(color, QtGui.QColor)):
+            raise TypeError("Parameter passed error!")
+        elif self.__parent is None:
+            raise AttributeError("The 'parent' of the frame is None")
+        elif self.__shadow is None:
+            raise AttributeError("The 'bind_obj' of the frame is None")
+        
+        judge: bool = True
+        position = pos
+
+        if pos < 0: 
+            position = 0
+        elif pos > 1: 
+            position = 1
+
+        for i in range(len(self.__gradient_color_list)):
+            if position == self.__gradient_color_list[i][0]:
+                self.__gradient_color_list[i][1] = QtGui.QColor(color)
+                judge = False
+                break
+        if judge:
+            self.__gradient_color_list.append(list([position, QtGui.QColor(color)]))
+
+        self.__flash()
+
+
+
+    def setShadowWidth(self, width: int | float) -> None:
+        if not isinstance(width, (int, float)):
+            raise TypeError("Parameter passed error! The parameter type must be 'int' or 'float'.")
+        elif self.__parent is None:
+            raise AttributeError("The 'parent' of the frame is None")
+        elif self.__shadow is None:
+            raise AttributeError("The 'bind_obj' of the frame is None")
+        
+        if width < 0:
+            self.__shadow_width = 0
+        else:
+            self.__shadow_width = width
+        self.__shadow.setShadowWidth(self.__shadow_width)
+        self.__flash()
+    
+
+
+    def shadowWidth(self) -> int | float:
+        return self.__shadow_width
+    
+
+
+    def resetColor(self) -> None:
+        if self.__parent is None:
+            raise AttributeError("The 'parent' of the frame is None")
+        elif self.__shadow is None:
+            raise AttributeError("The 'bind_obj' of the frame is None")
+        
+        del self.__gradient_color_list
+        self.__gradient_color_list = [
+            [0, QtGui.QColor(0, 0, 0, 0)],
+            [1, QtGui.QColor(0, 0, 0, 0)]
+        ]
+        self.__flash()
+
+
+
+    def deleteLater(self) -> None:
+        if self.__shadow is not None:
+            self.resetColor()
+            self.__shadow.deleteLater()
+            self.__shadow = None
